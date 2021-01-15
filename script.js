@@ -4,12 +4,14 @@ let secretNumber = Math.trunc(Math.random()*20)+1;
 let score = 20;
 let highScore = 0;
 
+const element = localStorage.getItem("HighScore");
+document.querySelector('.highscore').textContent = element;
+
 const displayMessage = (message) => {
     document.querySelector('.message').textContent = message;
 }
 
-document.querySelector('.check').addEventListener('click', () => {
-
+const checkGame = function() {
     const guess = Number(document.querySelector('.guess').value);
     console.log(guess, typeof guess);
     
@@ -27,7 +29,9 @@ document.querySelector('.check').addEventListener('click', () => {
 
         if (score > highScore) {
             highScore = score;
-            document.querySelector('.highscore').textContent = highScore;
+            localStorage.setItem("HighScore", highScore);
+            const element = localStorage.getItem("HighScore");
+            document.querySelector('.highscore').textContent = element;
         }
 
         //wrong
@@ -37,6 +41,7 @@ document.querySelector('.check').addEventListener('click', () => {
             score--;
             displayMessage(guess > secretNumber ? 'Too high!' : 'Too low!');
             document.querySelector('.score').textContent = score;
+            document.querySelector('.guess').value = '';
             document.querySelector('.guess').focus();
             
         } else {
@@ -46,6 +51,19 @@ document.querySelector('.check').addEventListener('click', () => {
     
             document.querySelector('body').style.backgroundColor = 'red';
         }
+    }
+}
+
+window.onload = () => {
+    document.querySelector('.guess').focus();
+  }
+
+document.querySelector('.check').addEventListener('click', checkGame);
+
+document.querySelector('.guess').addEventListener('keypress', (e) => {
+    const gNumber = Number(document.querySelector('.guess').value);
+    if (e.key === 'Enter') {
+      checkGame();
     }
 });
 
