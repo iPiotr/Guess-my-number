@@ -27,7 +27,7 @@ const checkGame = function() {
 
         document.querySelector('.number').style.width = '30rem';
 
-        if (score > highScore) {
+        if (score > localStorage.getItem("HighScore")) {
             highScore = score;
             localStorage.setItem("HighScore", highScore);
             const element = localStorage.getItem("HighScore");
